@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\UserSearchController;
+use App\Http\Controllers\VerificationController;
+
 
 
 Route::get('/', function () {
@@ -38,3 +40,6 @@ Route::get('/admin/create', function () {
 Route::get('/user/search', [UserSearchController::class, 'index'])->name('user.search');
 Route::post('/user/search', [UserSearchController::class, 'search'])->name('user.search.submit');
 
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::post('/user-details', [ApiController::class, 'getUserDetails']);
+});
